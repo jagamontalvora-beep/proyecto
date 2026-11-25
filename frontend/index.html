@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#142d3b">
+  <meta name="description" content="BiblioTrack: catálogo, usuarios y préstamos de tu biblioteca en un solo lugar.">
+  <title>BiblioTrack · Tu biblioteca en orden</title>
+  <link rel="icon" href="/assets/brand.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <div id="sidebar-overlay" class="sidebar-overlay" hidden></div>
+  <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+    <a class="brand" href="#resumen"><img src="/assets/brand.svg" alt="" width="38" height="38"><span>Biblio<span class="brand-accent">Track</span><small>GESTIÓN BIBLIOTECARIA</small></span></a>
+    <div class="workspace-label"><span class="workspace-icon" data-icon="library"></span><span>Mi biblioteca<small>Espacio de administración</small></span></div>
+    <p class="nav-label">PRINCIPAL</p>
+    <nav class="nav-links">
+      <a href="#resumen" data-route="resumen"><span data-icon="dashboard"></span>Resumen</a>
+      <a href="#catalogo" data-route="catalogo"><span data-icon="book"></span>Catálogo</a>
+      <a href="#usuarios" data-route="usuarios"><span data-icon="users"></span>Usuarios</a>
+      <a href="#prestamos" data-route="prestamos"><span data-icon="exchange"></span>Préstamos<span id="nav-overdue" class="nav-count" hidden></span></a>
+    </nav>
+    <p class="nav-label">ANÁLISIS</p>
+    <nav class="nav-links"><a href="#consultas" data-route="consultas"><span data-icon="chart"></span>Consultas avanzadas</a></nav>
+    <div class="sidebar-bottom"><div class="sidebar-note"><span data-icon="spark"></span><p>Cada libro, una historia.<br><strong>Cada préstamo, en orden.</strong></p></div><div class="workspace-footer"><span class="avatar admin-avatar">BT</span><div>Administración<small>BiblioTrack · v1.0</small></div></div></div>
+  </aside>
+  <div class="app-shell">
+    <header class="topbar">
+      <button type="button" id="menu-toggle" class="icon-button menu-toggle" aria-label="Abrir navegación" aria-controls="sidebar" aria-expanded="false"><span data-icon="menu"></span></button>
+      <div class="breadcrumb">Mi biblioteca<span>/</span><strong id="breadcrumb-current">Resumen</strong></div>
+      <form id="global-search" class="global-search" role="search"><span data-icon="search"></span><label for="global-search-input" class="sr-only">Buscar en el catálogo</label><input id="global-search-input" name="texto" type="search" placeholder="Buscar un libro o autor…" maxlength="150"><button type="submit" class="sr-only">Buscar</button></form>
+      <span id="connection-status" class="connection-status" role="status"><span></span>Conectando</span>
+      <span class="avatar top-avatar" aria-label="Administración de biblioteca">BT</span>
+    </header>
+    <main id="main" tabindex="-1"><div id="content" aria-live="polite"><div class="loading-state"><span class="spinner"></span><p>Preparando tu biblioteca…</p></div></div></main>
+    <footer class="page-footer"><span>BiblioTrack <span class="footer-dot">·</span> Tu biblioteca, conectada.</span><span>Catálogo · Comunidad · Conocimiento</span></footer>
+  </div>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Activa JavaScript para consultar y administrar la biblioteca.</p></noscript>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "name": "bibliotrack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema web de gestión de préstamos bibliotecarios con GraphQL y MongoDB",
+  "type": "commonjs",
+  "main": "backend/src/index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "start": "node backend/src/index.js",
+    "dev": "node --watch backend/src/index.js",
+    "preview:test": "node backend/scripts/preview-test.js",
+    "seed": "node backend/scripts/seed.js",
+    "seed:mongosh": "node backend/scripts/ejecutar-generador.js",
+    "check": "node backend/scripts/check.js",
+    "test": "node --test --test-concurrency=1 backend/tests/*.test.js"
+  },
+  "dependencies": {
+    "@apollo/server": "^5.0.0",
+    "@as-integrations/express5": "^1.1.2",
+    "cors": "^2.8.5",
+    "dataloader": "^2.2.3",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "graphql": "^16.11.0",
+    "mongoose": "^9.0.0"
+  },
+  "devDependencies": {
+    "jsdom": "^31.0.1",
+    "mongodb-memory-server-core": "^10.4.3"
+  },
+  "overrides": {
+    "@graphql-tools/utils": "12.0.2"
+  }
+}

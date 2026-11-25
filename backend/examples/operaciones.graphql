@@ -1,0 +1,78 @@
+# Ejecuta una operación por vez en Apollo Sandbox.
+# Para las mutations, agrega sus variables en el panel Variables.
+
+query Dashboard {
+  estadisticasGenerales {
+    totalLibros totalEjemplares totalUsuarios ejemplaresDisponibles
+    prestamosActivos prestamosVencidos
+    disponibilidad { estado cantidad }
+    proximosAVencer { id fechaVencimiento usuario { nombre apellidos } ejemplar { codigoEjemplar libro { titulo } } }
+    ultimosMovimientos { prestamoId tipo fecha detalle }
+  }
+}
+
+query Catalogo($texto: String, $categoria: String, $pagina: Int = 1) {
+  libros(texto: $texto, categoria: $categoria, pagina: $pagina, limite: 20) {
+    total pagina paginas
+    items { id titulo isbn autores categoria estado ejemplares { total items { id codigoEjemplar estado ubicacion } } }
+  }
+}
+
+# Variables: {"input":{"titulo":"Libro de prueba","isbn":"9780307474728","autores":["Autor de prueba"],"categoria":"Literatura","editorial":"Ejemplo","anioPublicacion":2024}}
+mutation RegistrarLibro($input: CrearLibroInput!) {
+  crearLibro(input: $input) { id titulo isbn }
+}
+
+# Usa el id real del libro creado en libroId.
+mutation RegistrarEjemplar($input: CrearEjemplarInput!) {
+  crearEjemplar(input: $input) { id codigoEjemplar estado libro { titulo } }
+}
+
+# Variables: {"input":{"nombre":"Ana","apellidos":"López","matricula":"ALUMNO-001","correo":"ana@example.com","tipoUsuario":"Estudiante"}}
+mutation RegistrarUsuario($input: CrearUsuarioInput!) {
+  crearUsuario(input: $input) { id nombre matricula }
+}
+
+query SeleccionarPrestamo($texto: String) {
+  usuarios(texto: $texto, estado: "Activo") { items { id nombre apellidos matricula } }
+  ejemplaresDisponibles { items { id codigoEjemplar libro { titulo estado } } }
+}
+
+# input: usuarioId, ejemplarId y fechaVencimiento ISO futura; observaciones es opcional.
+mutation RegistrarPrestamo($input: CrearPrestamoInput!) {
+  crearPrestamo(input: $input) { id estado fechaVencimiento usuario { nombre } ejemplar { codigoEjemplar estado } }
+}
+
+mutation RenovarPrestamo($id: ID!, $fechaVencimiento: DateTime!) {
+  actualizarPrestamo(id: $id, input: {fechaVencimiento: $fechaVencimiento}) { id fechaVencimiento movimientos { tipo fecha detalle } }
+}
+
+mutation Devolver($id: ID!) {
+  registrarDevolucion(id: $id) { id estado fechaDevolucion ejemplar { estado } }
+}
+
+mutation Cancelar($id: ID!, $motivo: String!) {
+  cancelarPrestamo(id: $id, motivo: $motivo) { id estado movimientos { tipo fecha detalle } }
+}
+
+query Historial($usuarioId: ID!) {
+  historialUsuario(usuarioId: $usuarioId) {
+    total items { id estado fechaPrestamo fechaVencimiento fechaDevolucion ejemplar { codigoEjemplar libro { titulo } } movimientos { tipo fecha detalle } }
+  }
+}
+
+query Vencidos {
+  prestamosVencidos { total items { id fechaVencimiento usuario { nombre apellidos correo } ejemplar { codigoEjemplar } } }
+}
+
+query Consultas {
+  consultasAvanzadas { codigo grupo responsable nombre descripcion requierePeriodo requiereUsuario }
+}
+
+# Variables: {"codigo":"G01"}
+# G10/C09 requieren desde/hasta, y C07 requiere usuarioId.
+query Reporte($codigo: String!, $desde: DateTime, $hasta: DateTime, $usuarioId: ID, $pagina: Int = 1) {
+  consultaAvanzada(codigo: $codigo, desde: $desde, hasta: $hasta, usuarioId: $usuarioId, pagina: $pagina, limite: 20) {
+    consulta { codigo nombre descripcion } total pagina limite filas
+  }
+}
