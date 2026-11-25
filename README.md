@@ -1,2 +1,3 @@
 # proyecto
-Proyecto PWA de LSW
+Proyecto PWA de NoSQL
+
